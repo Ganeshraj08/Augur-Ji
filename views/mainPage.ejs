@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Health Dashboard</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Custom CSS for Healthcare Theme -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/path-to-your-custom.css" />
+    <style>
+      /* Custom CSS for Sidebar */
+      body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-size: cover;
+        background-image: url(/images/rm222batch3-kul-16.jpg);
+      }
+      #sidebar {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        bottom: 0;
+        width: 250px; /* Adjust the width as needed */
+        overflow-y: auto; /* Enable scrolling if content exceeds the height */
+        padding-top: 20px;
+        background-image: linear-gradient(
+          to bottom,
+          rgb(35, 185, 117),
+          rgb(124, 246, 205)
+        );
+      }
+
+      /* Add padding to the main content area */
+      main {
+        margin-left: 270px; /* Adjust the value to match the width of your sidebar + some spacing */
+        padding: 20px;
+        margin-top: 50px;
+      }
+
+      /* Responsive CSS for smaller screens */
+      @media (max-width: 767px) {
+        #sidebar {
+          position: static;
+          width: 100%;
+          overflow-y: visible;
+          margin-top: 60px;
+        }
+        main {
+          margin-left: 0;
+          padding: 20px;
+          margin-top: auto;
+        }
+        .card {
+          height: auto; /* Auto height on smaller screens */
+        }
+      }
+
+      /* Styling for Navbar */
+      .navbar {
+        background-color: #fff; /* White background color */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-light .navbar-toggler {
+        border-color: #333; /* Dark border color for the toggler button */
+      }
+
+      .navbar-light .navbar-nav .nav-link {
+        color: #333; /* Dark text color for navbar links */
+        transition: color 0.3s;
+      }
+
+      /* Change text color on hover for navbar links */
+      .navbar-light .navbar-nav .nav-link:hover {
+        color: darkgreen; /* Green text color on hover */
+      }
+
+      /* Styling for Cards */
+      .card {
+        background-color: #007bff; /* Blue background color for cards */
+        color: #fff; /* White text color for cards */
+        border: none; /* Remove card borders */
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-radius: 20px; /* Increase border radius */
+        height: 250px; /* Increase height */
+        font-size: 18px; /* Increase font size for card text */
+      }
+
+      /* Add hover effect for cards */
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Styling for buttons */
+      .btn {
+        border: none;
+        transition: background-color 0.3s;
+        font-size: 18px; /* Increase font size for buttons */
+      }
+
+      /* Change button background color on hover */
+      .bp:hover {
+        background-color: crimson; /* Darker blue background on hover */
+      }
+
+      .an:hover {
+        background-color: rgb(
+          28,
+          119,
+          119
+        ); /* Darker blue background on hover */
+      }
+
+      #sidebar .nav-link {
+        color: darkslategrey;
+        font-size: 1.4rem; /* Increase font size for sidebar links */
+      }
+
+      #sidebar .nav-link:hover {
+        /* Adjust the font size to your preference */
+        color: black;
+      }
+
+      /* Increase font size for page title */
+      h1 {
+        font-size: 32px;
+      }
+
+      /* Increase font size for navbar brand */
+      .navbar-brand {
+        font-size: 24px;
+      }
+
+      /* Increase font size for user name in the navbar */
+      .navbar .d-flex align-items-center span {
+        font-size: 20px;
+      }
+      a,
+      p,
+      span {
+        font-size: 1.4rem;
+      }
+      .container {
+        /* Light yellow background */
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        margin: 20px auto;
+        max-width: 600px;
+      }
+
+      .form-heading {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #016a70; /* Teal color for heading */
+      }
+
+      .form-control {
+        border: 2px solid #016a70; /* Light green border for input fields */
+        border-radius: 5px;
+        color: #333; /* Text color */
+      }
+
+      /* Style the "Submit" button with the provided color palette */
+      .submit-button {
+        margin-top: 10px;
+        background-color: #016a70; /* Light green background */
+        color: #fff; /* White text color */
+      }
+
+      /* Style the "Add More Details" button with a different color */
+
+      /* Style the "Hide Additional Details" button with the same blue color */
+
+      /* Change the background color of the health issues group for emphasis */
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="/images/Augur ji 1.png" width="60" height="40" alt="" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex align-items-center">
+          <img
+            src="/images/3719231.jpg"
+            width="40"
+            height="40"
+            alt="User Profile Icon"
+            style="border: 2px solid #000000; border-radius: 50%"
+          />
+          <span class="mx-2"><%= userDetails.name %></span>
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            ></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <button class="dropdown-item" type="button">
+                Account Details
+              </button>
+              <button class="dropdown-item" type="button">Settings</button>
+              <button class="dropdown-item" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+      <div class="position-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <h2 class="nav-link" style="color: black; font-size: 1.5rem">
+              Healthcare Menu
+            </h2>
+            <hr />
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+            <hr />
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Appointments</a>
+            <hr />
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Medications</a>
+            <hr />
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Reports</a>
+            <br />
+          </li>
+          <!-- Add more healthcare-related links and content as needed -->
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      <div id="displayedDetails" class="mt-4 rounded bg-transparent">
+        <!-- Filled details will be displayed here -->
+        <h2 class="mb-4">Filled Basic Details:</h2>
+        <div
+          class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
+        >
+          <p class="mb-2 mr-4">
+            Height: <%= userDetails.basicDetails.height || "__" %> Cm
+          </p>
+          <p class="mb-2 mr-4">
+            Weight: <%= userDetails.basicDetails.weight || "__" %> Kg
+          </p>
+          <p class="mb-2 mr-4">
+            Age: <%= userDetails.basicDetails.age || "__" %>
+          </p>
+          <p class="mb-2 mr-4">
+            Gender: <%= userDetails.basicDetails.gender || "__" %>
+          </p>
+          <p class="mb-2">
+            Phone Number: <%= userDetails.basicDetails.phone || "__" %>
+          </p>
+        </div>
+      </div>
+      <button
+        id="openFormButton"
+        class="btn btn-primary"
+        style="background-color: #016a70"
+      >
+        Open Medical Form
+      </button>
+      <div class="container" id="medicalFormOverlay" style="display: none">
+        <div class="form-heading">Medical Assessment Form</div>
+        <form action="/submitMedicalForm" method="POST">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="height">Height (cm)</label>
+              <input
+                type="text"
+                class="form-control"
+                id="height"
+                name="height"
+                placeholder="Enter your height"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="weight">Weight (kg)</label>
+              <input
+                type="text"
+                class="form-control"
+                id="weight"
+                name="weight"
+                placeholder="Enter your weight"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="age">Age</label>
+              <input
+                type="number"
+                class="form-control"
+                id="age"
+                name="age"
+                placeholder="Enter your age"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="gender">Gender</label>
+              <select class="form-control" id="gender" name="gender">
+                <!-- Add name attribute -->
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              name="phone"
+              placeholder="Enter your phone number"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="healthIssues">Do you have any health issues?</label>
+            <select class="form-control" id="healthIssues" name="healthIssues">
+              <!-- Add name attribute -->
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="form-group health-issues-group" style="display: none">
+            <label for="healthIssueDetails">If yes, please specify:</label>
+            <textarea
+              class="form-control"
+              id="healthIssueDetails"
+              name="healthIssueDetails"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Add name attributes to other form fields -->
+          <div id="additionalDetails" style="display: none">
+            <div class="form-group">
+              <label for="medications"
+                >Are you currently taking any medications? If yes, please list
+                them.</label
+              >
+              <textarea
+                class="form-control"
+                id="medications"
+                name="medications"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="allergies"
+                >Do you have any allergies? If yes, please list them.</label
+              >
+              <textarea
+                class="form-control"
+                id="allergies"
+                name="allergies"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="surgeries"
+                >Have you had any surgeries in the past? If yes, please
+                specify.</label
+              >
+              <textarea
+                class="form-control"
+                id="surgeries"
+                name="surgeries"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="healthcareProvider"
+                >Are you currently under the care of any healthcare provider? If
+                yes, please provide their name and contact information.</label
+              >
+              <textarea
+                class="form-control"
+                id="healthcareProvider"
+                name="healthcareProvider"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="smoking"
+                >Do you smoke? If yes, how many cigarettes per day?</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="smoking"
+                name="smoking"
+                placeholder="Enter your smoking habits"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="alcohol"
+                >Do you consume alcohol? If yes, how often and in what
+                quantity?</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="alcohol"
+                name="alcohol"
+                placeholder="Enter your alcohol consumption habits"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="physicalActivity"
+                >Do you engage in regular physical activity or exercise?</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="physicalActivity"
+                name="physicalActivity"
+                placeholder="Enter your physical activity habits"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="diet">Describe your typical daily diet.</label>
+              <textarea
+                class="form-control"
+                id="diet"
+                name="diet"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="dietaryRestrictions"
+                >Do you have any dietary restrictions or special dietary
+                needs?</label
+              >
+              <textarea
+                class="form-control"
+                id="dietaryRestrictions"
+                name="dietaryRestrictions"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="familyMedicalHistory"
+                >Are there any significant medical conditions or diseases that
+                run in your family (e.g., heart disease, diabetes, cancer)? If
+                yes, please specify which conditions and any affected family
+                members.</label
+              >
+              <textarea
+                class="form-control"
+                id="familyMedicalHistory"
+                name="familyMedicalHistory"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="currentSymptoms"
+                >Are you currently experiencing any specific symptoms or
+                discomfort? If yes, please describe them.</label
+              >
+              <textarea
+                class="form-control"
+                id="currentSymptoms"
+                name="currentSymptoms"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="emergencyContact"
+                >Emergency Contact: Name and contact information of an emergency
+                contact person.</label
+              >
+              <textarea
+                class="form-control"
+                id="emergencyContact"
+                name="emergencyContact"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="additionalComments"
+                >Additional Comments or Information:</label
+              >
+              <textarea
+                class="form-control"
+                id="additionalComments"
+                name="additionalComments"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Add a submit button at the end of the form -->
+          <button
+            type="button"
+            class="btn btn-outline-dark"
+            id="toggleDetailsButton"
+          >
+            Add More Details..
+          </button>
+          <div class="text-center">
+            <button type="submit" class="btn submit-button">Submit</button>
+          </div>
+        </form>
+      </div>
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+      >
+        <h1 class="h2">Patient Dashboard</h1>
+      </div>
+
+      <!-- Cards for Health Metrics -->
+      <!-- Cards for Health Metrics -->
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div
+            class="card"
+            style="
+              background-image: url(/images/top-view-tensiometer-checking-blood-pressure.jpg);
+              background-size: cover;
+            "
+          >
+            <div class="card-body">
+              <h5 class="card-title h3">Blood Pressure</h5>
+              <p class="card-text">Track your blood pressure here.</p>
+            </div>
+            <div class="card-footer">
+              <a href="/bp-dashboard" class="btn bp btn-outline-dark"
+                >View Dashboard</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div
+            class="card"
+            style="
+              background-image: url(https://img.freepik.com/premium-photo/glucometer-with-test-strip-blue-space-space-text-selective-focus_96826-329.jpg?size=626&ext=jpg&uid=R104925719&ga=GA1.2.1857836329.1685462787&semt=ais);
+              background-size: 400px 250px;
+              color: black;
+            "
+          >
+            <div class="card-body">
+              <h5 class="card-title h3">Sugar Levels</h5>
+              <p class="card-text">Track your sugar levels here.</p>
+            </div>
+            <div class="card-footer">
+              <a href="/sugar-dashboard" class="btn sg btn-light"
+                >View Dashboard</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div
+            class="card"
+            style="
+              background-image: url(https://img.freepik.com/free-photo/medical-equipment_23-2148108927.jpg?w=740&t=st=1694348933~exp=1694349533~hmac=7154e336e8f63437740173c0f89c610c2c1542a014870d424a557d174024d379);
+              background-size: cover;
+            "
+          >
+            <div class="card-body">
+              <h5 class="card-title h3">Another Metric</h5>
+              <p class="card-text">Track another health metric here.</p>
+            </div>
+            <div class="card-footer">
+              <a href="/another-dashboard" class="btn an btn-outline-dark"
+                >View Dashboard</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Add more health metric cards as needed -->
+      </div>
+
+      <!-- Include the JavaScript code for displaying the form -->
+
+      <!-- Medical Form (hidden by default) -->
+      <div id="bpChartContainer">
+        <canvas id="bpChart" width="400" height="400"></canvas>
+      </div>
+    </main>
+
+    <!-- Include Bootstrap JS and jQuery (for Bootstrap functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var healthIssuesSelect = document.getElementById("healthIssues");
+        var healthIssuesGroup = document.querySelector(".health-issues-group");
+
+        healthIssuesSelect.addEventListener("change", function () {
+          if (healthIssuesSelect.value === "yes") {
+            healthIssuesGroup.style.display = "block";
+          } else {
+            healthIssuesGroup.style.display = "none";
+          }
+        });
+
+        const additionalDetails = document.getElementById("additionalDetails"); // Corrected ID
+        const toggleDetailsButton = document.getElementById(
+          "toggleDetailsButton"
+        );
+
+        toggleDetailsButton.addEventListener("click", function () {
+          if (
+            additionalDetails.style.display === "none" ||
+            additionalDetails.style.display === ""
+          ) {
+            // Handle initial state
+            additionalDetails.style.display = "block";
+            toggleDetailsButton.textContent = "Hide Additional Details..";
+          } else {
+            additionalDetails.style.display = "none";
+            toggleDetailsButton.textContent = "Add More Details..";
+          }
+        });
+      });
+
+      // const form = document.querySelector("form");
+      // const displayedDetails = document.getElementById("displayedDetails");
+
+      // form.addEventListener("submit", function (event) {
+      //   event.preventDefault();
+
+      //   // Get values from form inputs
+      //   const height = document.getElementById("height").value;
+      //   const weight = document.getElementById("weight").value;
+      //   const age = document.getElementById("age").value;
+      //   const gender = document.getElementById("gender").value;
+      //   const phone = document.getElementById("phone").value;
+
+      //   // Create HTML to display filled details
+      //   const detailsHTML = `
+      //       <h2 class="mb-4">Filled Basic Details:</h2>
+
+      //   <div
+      //     class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
+      //   >
+      //     <p class="mb-2 mr-4">Height:  ${height} cm</p>
+      //     <p class="mb-2 mr-4">Weight: ${weight} kg</p>
+      //     <p class="mb-2 mr-4">Age:${age}</p>
+      //     <p class="mb-2 mr-4">Gender: ${gender}</p>
+      //     <p class="mb-2">Phone Number: ${phone}</p>
+      //   </div>
+      //   `;
+
+      //   // Set the innerHTML of the displayedDetails div
+      //   displayedDetails.innerHTML = detailsHTML;
+
+      //   closeMedicalForm();
+      // });
+      // Function to open the medical form pop-up
+
+      function openMedicalForm() {
+        // Display the modal overlay
+        document.getElementById("medicalFormOverlay").style.display = "block";
+      }
+
+      // Function to close the medical form pop-up
+      function closeMedicalForm() {
+        // Hide the modal overlay
+        document.getElementById("medicalFormOverlay").style.display = "none";
+      }
+
+      // Attach a click event listener to the button
+      document
+        .getElementById("openFormButton")
+        .addEventListener("click", openMedicalForm);
+    </script>
+  </body>
+</html>
